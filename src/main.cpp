@@ -3,7 +3,7 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <fmt/format.h>
-#include <GL/glew.h>
+#include "shader.hpp"
 
 void list_audio_devices(const ALchar* devices) {
   const ALchar* device = devices, *next = devices + 1;
@@ -31,5 +31,7 @@ int main() {
     std::string s = fmt::format("I'd rather be {1} than {0}.", "right", "happy");
     std::cout << s << std::endl;
 
+    unsigned int shaderID = loadShaderFromFile("../shader/vs.glsl", "../shader/fs.glsl");
+    glDeleteProgram(shaderID);
     return 0;
 }
