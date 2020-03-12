@@ -26,5 +26,7 @@ endif()
 add_executable(
     cmake-good 
     src/main.cpp
+    src/shader.hpp
+    src/shader.cpp
     )
 target_link_libraries(cmake-good PRIVATE ${CONAN_LIBS} ${OPENGL_LIBRARY})
