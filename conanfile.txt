@@ -1,5 +1,7 @@
 [requires]
 openal/1.19.1
+fmt/4.1.0@bincrafters/stable
+Catch/1.12.1@bincrafters/stable
 
 [generators]
 cmake
