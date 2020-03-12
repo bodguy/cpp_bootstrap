@@ -11,13 +11,16 @@ conan_basic_setup()
 add_subdirectory(test)
 
 if(APPLE)
+    message(STATUS ">>> MACOS")
     find_library(OPENGL_LIBRARY OpenGL REQUIRED)
-elseif(LINUX)
+elseif(UNIX AND NOT APPLE) # LINUX
+    message(STATUS ">>> LINUX")
     find_library(OPENGL_LIBRARY GL REQUIRED)
 elseif(WIN32)
+    message(STATUS ">>> WIN32")
     find_library(OPENGL_LIBRARY OpenGL REQUIRED)
 else()
-    message(STATUS ">>> failed to find libary opengl")
+    message(FATAL ">>> failed to find libary opengl")
 endif()
 
 add_executable(
