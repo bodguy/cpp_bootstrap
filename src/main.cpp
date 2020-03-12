@@ -1,12 +1,12 @@
-#include <iostream>
-#include <cstring>
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <fmt/format.h>
+#include <cstring>
+#include <iostream>
 #include "shader.hpp"
 
 void list_audio_devices(const ALchar* devices) {
-  const ALchar* device = devices, *next = devices + 1;
+  const ALchar *device = devices, *next = devices + 1;
   size_t len = 0;
 
   std::cout << "Devices list:" << std::endl;
@@ -21,17 +21,17 @@ void list_audio_devices(const ALchar* devices) {
 }
 
 int main() {
-    ALCdevice* device = alcOpenDevice(NULL);
-    ALboolean enumeration = alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT");
-    if (enumeration == AL_FALSE) {
-        std::cout << "Enumeration extension not support!" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-    list_audio_devices(alcGetString(NULL, ALC_DEVICE_SPECIFIER));
-    std::string s = fmt::format("I'd rather be {1} than {0}.", "right", "happy");
-    std::cout << s << std::endl;
+  ALCdevice* device = alcOpenDevice(NULL);
+  ALboolean enumeration = alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT");
+  if (enumeration == AL_FALSE) {
+    std::cout << "Enumeration extension not support!" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+  list_audio_devices(alcGetString(NULL, ALC_DEVICE_SPECIFIER));
+  std::string s = fmt::format("I'd rather be {1} than {0}.", "right", "happy");
+  std::cout << s << std::endl;
 
-    unsigned int shaderID = loadShaderFromFile("../shader/vs.glsl", "../shader/fs.glsl");
-    glDeleteProgram(shaderID);
-    return 0;
+  unsigned int shaderID = loadShaderFromFile("../shader/vs.glsl", "../shader/fs.glsl");
+  glDeleteProgram(shaderID);
+  return 0;
 }

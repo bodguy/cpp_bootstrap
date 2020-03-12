@@ -1,5 +1,5 @@
-#include <iostream>
 #include "shader.hpp"
+#include <iostream>
 
 bool loadFile(const std::string& filepath, std::string& out_source) {
   FILE* fp = NULL;
