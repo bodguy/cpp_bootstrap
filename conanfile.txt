@@ -1,0 +1,5 @@
+[requires]
+openal/1.19.1
+
+[generators]
+cmake
