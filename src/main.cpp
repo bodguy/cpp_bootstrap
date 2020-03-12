@@ -3,6 +3,7 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <fmt/format.h>
+#include <GL/glew.h>
 
 void list_audio_devices(const ALchar* devices) {
   const ALchar* device = devices, *next = devices + 1;
