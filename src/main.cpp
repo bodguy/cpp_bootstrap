@@ -1,34 +1,63 @@
-#include <AL/al.h>
-#include <AL/alc.h>
-#include <cstring>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <iostream>
-#include "shader.hpp"
-
-void list_audio_devices(const ALchar* devices) {
-  const ALchar *device = devices, *next = devices + 1;
-  size_t len = 0;
-
-  std::cout << "Devices list:" << std::endl;
-  std::cout << "=============" << std::endl;
-  while (device && *device != '\0' && next && *next != '\0') {
-    std::cout << device << std::endl;
-    len = strlen(device);
-    device += (len + 1);
-    next += (len + 2);
-  }
-  std::cout << "=============" << std::endl;
-}
+#include "file_reader.h"
+#include "stub.h"
 
 int main() {
-  ALCdevice* device = alcOpenDevice(NULL);
-  ALboolean enumeration = alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT");
-  if (enumeration == AL_FALSE) {
-    std::cout << "Enumeration extension not support!" << std::endl;
-    exit(EXIT_FAILURE);
-  }
-  list_audio_devices(alcGetString(NULL, ALC_DEVICE_SPECIFIER));
+  glfwInit();
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-  unsigned int shaderID = loadShaderFromFile("../shader/vs.glsl", "../shader/fs.glsl");
-  glDeleteProgram(shaderID);
+  GLFWwindow* window = glfwCreateWindow(500, 500, "LearnOpenGL", NULL, NULL);
+  if (window == NULL) {
+    std::cout << "Failed to create GLFW window" << std::endl;
+    glfwTerminate();
+    return -1;
+  }
+
+  glfwMakeContextCurrent(window);
+
+  glewExperimental = GL_TRUE;
+  if (glewInit() != GLEW_OK) return -1;
+  glEnable(GL_DEPTH_TEST);
+
+  unsigned int cubeVAO, cubeVBO;
+  glGenVertexArrays(1, &cubeVAO);
+  glGenBuffers(1, &cubeVBO);
+  glBindVertexArray(cubeVAO);
+  glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices), &cube_vertices, GL_STATIC_DRAW);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  unsigned int shaderProgram = read_shader("../../shader/vs.glsl", "../../shader/fs.glsl");
+
+  float deltaTime = 0.0f;
+  float lastFrame = 0.0f;
+
+  while (!glfwWindowShouldClose(window)) {
+    float currentFrame = glfwGetTime();
+    deltaTime = currentFrame - lastFrame;
+    lastFrame = currentFrame;
+    std::cout << deltaTime << '\n';
+
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glUseProgram(shaderProgram);
+    glBindVertexArray(cubeVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+  }
+
+  glDeleteProgram(shaderProgram);
+  glDeleteVertexArrays(1, &cubeVAO);
+  glDeleteBuffers(1, &cubeVBO);
+  glfwTerminate();
+
   return 0;
 }

@@ -1,7 +1,8 @@
-#include "shader.hpp"
+#include "file_reader.h"
+#include <GL/glew.h>
 #include <iostream>
 
-bool loadFile(const std::string& filepath, std::string& out_source) {
+bool read_file(const std::string& filepath, std::string& out_source) {
   FILE* fp = NULL;
   fp = fopen(filepath.c_str(), "r");
   if (!fp) return false;
@@ -17,11 +18,11 @@ bool loadFile(const std::string& filepath, std::string& out_source) {
   return true;
 }
 
-unsigned int loadShaderFromFile(const std::string& vs_name, const std::string& fs_name) {
+unsigned int read_shader(const std::string& vs_name, const std::string& fs_name) {
   std::string vertexSource, fragmentSource;
-  bool result = loadFile(vs_name, vertexSource);
+  bool result = read_file(vs_name, vertexSource);
   if (!result) return 0;
-  result = loadFile(fs_name, fragmentSource);
+  result = read_file(fs_name, fragmentSource);
   if (!result) return 0;
 
   // vertex shader
@@ -62,7 +63,7 @@ unsigned int loadShaderFromFile(const std::string& vs_name, const std::string& f
   glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
   if (!success) {
     glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-    std::cout << "program linking error with " << vs_name << " and " << fs_name << std::endl << infoLog << std::endl;
+    std::cout << "program linking error with " << vs_name << "and " << fs_name << std::endl << infoLog << std::endl;
     return 0;
   }
   glDeleteShader(vertexShader);
