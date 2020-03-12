@@ -8,6 +8,8 @@ include(CTest)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
+set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,readability-*)
+
 add_subdirectory(test)
 
 if(APPLE)

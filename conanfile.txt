@@ -1,7 +1,6 @@
 [requires]
 openal/1.19.1
 glew/2.1.0@bincrafters/stable
-fmt/4.1.0@bincrafters/stable
 Catch/1.12.1@bincrafters/stable
 
 [generators]

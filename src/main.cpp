@@ -1,6 +1,5 @@
 #include <AL/al.h>
 #include <AL/alc.h>
-#include <fmt/format.h>
 #include <cstring>
 #include <iostream>
 #include "shader.hpp"
@@ -28,8 +27,6 @@ int main() {
     exit(EXIT_FAILURE);
   }
   list_audio_devices(alcGetString(NULL, ALC_DEVICE_SPECIFIER));
-  std::string s = fmt::format("I'd rather be {1} than {0}.", "right", "happy");
-  std::cout << s << std::endl;
 
   unsigned int shaderID = loadShaderFromFile("../shader/vs.glsl", "../shader/fs.glsl");
   glDeleteProgram(shaderID);
