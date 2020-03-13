@@ -4,11 +4,23 @@ project(MyProject LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 
+#include(cmake/Conan.cmake)
+#run_conan()
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
+# Link this 'library' to set the c++ standard / compile-time options requested
+add_library(project_options INTERFACE)
+target_compile_features(project_options INTERFACE cxx_std_14)
+
+# Link this 'library' to use the warnings specified in CompilerWarnings.cmake
+add_library(project_warnings INTERFACE)
+
+# standard compiler warnings
+include(cmake/CompilerWarnings.cmake)
+set_project_warnings(project_warnings)
+
 add_subdirectory(test)
-add_executable(bootstrap)
 
 if(APPLE)
     find_library(OPENGL_LIBRARY OpenGL REQUIRED)
@@ -20,17 +32,10 @@ elseif(UNIX AND NOT APPLE) # LINUX
 elseif(WIN32)
     find_library(OPENGL_LIBRARY OpenGL REQUIRED)
 else()
-    message(FATAL "failed to find libary OpenGL")
+    message(SEND_ERROR "failed to find libary OpenGL")
 endif()
 
-# standard compiler warnings
-include(cmake/CompilerWarnings.cmake)
-set_project_warnings(bootstrap)
-
-# allow for static analysis options
-include(cmake/StaticAnalyzers.cmake)
-
-target_compile_features(bootstrap PRIVATE cxx_std_14)
+add_executable(bootstrap)
 target_sources(bootstrap
     PRIVATE
     src/main.cpp
@@ -45,6 +50,8 @@ target_link_libraries(bootstrap
     PRIVATE
     ${CONAN_LIBS}
     ${OPENGL_LIBRARY}
+    project_options
+    project_warnings
 )
 
 if(APPLE)

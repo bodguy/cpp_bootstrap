@@ -6,4 +6,4 @@ target_sources(MyTest
   PRIVATE
   simple_test.cpp
 )
-target_link_libraries(MyTest PRIVATE CatchMain)
+target_link_libraries(MyTest PRIVATE CatchMain project_warnings project_options)

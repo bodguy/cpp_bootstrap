@@ -13,12 +13,11 @@ install:
 build_script:
   - cmd: mkdir build
   - cmd: cd build
-  - cmd: conan install .. --build=missing
   - cmd: cmake c:\projects\source -G "Visual Studio 15"
   - cmd: cmake --build . --config Release
 test_script:
   - cmd: cd bin
-  - cmd: unittest.exe
+  - cmd: MyTest.exe
 artifacts:
   path: build\Release\*.exe
   name: binary_executable
