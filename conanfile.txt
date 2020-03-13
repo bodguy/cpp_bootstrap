@@ -3,6 +3,7 @@ Catch/1.12.1@bincrafters/stable
 openal/1.19.1
 glew/2.1.0@bincrafters/stable
 glfw/3.3.2@bincrafters/stable
+glm/0.9.9.7
 
 [generators]
 cmake
