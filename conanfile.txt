@@ -1,9 +1,10 @@
 [requires]
 Catch/1.12.1@bincrafters/stable
-openal/1.19.1
+openal/1.19.0@bincrafters/stable
 glew/2.1.0@bincrafters/stable
 glfw/3.3.2@bincrafters/stable
-glm/0.9.9.7
+glm/0.9.9.5@g-truc/stable
+lua/5.3.5
 
 [generators]
 cmake

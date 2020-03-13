@@ -1,73 +1,75 @@
 #include "file_reader.h"
 #include <GL/glew.h>
 #include <iostream>
+#include <fstream>
 
-bool read_file(const std::string& filepath, std::string& out_source) {
-  FILE* fp = NULL;
-  fp = fopen(filepath.c_str(), "r");
-  if (!fp) return false;
-  fseek(fp, 0, SEEK_END);
-  size_t size = static_cast<size_t>(ftell(fp));
-  fseek(fp, 0, SEEK_SET);
-  char* buffer = (char*)malloc(sizeof(char) * size);
-  if (!buffer) return false;
-  fread(buffer, size, 1, fp);
-  out_source.assign(buffer, size);
-  free(buffer);
-  fclose(fp);
+bool read_file(const std::string& filename, std::string& text) {
+  std::ifstream file(filename, std::ios::in);
+  if (!file.is_open())
+    return false;
+  file.unsetf(std::ios::skipws);
+
+  file.seekg(0, std::ios::end);
+  std::streampos file_size = file.tellg();
+  file.seekg(0, std::ios::beg);
+
+  text.reserve(file_size);
+  std::copy(std::istream_iterator<uint8_t>(file), std::istream_iterator<uint8_t>(), std::back_inserter(text));
+  file.close();
+
   return true;
 }
 
-unsigned int read_shader(const std::string& vs_name, const std::string& fs_name) {
+unsigned int read_shader(const std::string& vs, const std::string& fs) {
   std::string vertexSource, fragmentSource;
-  bool result = read_file(vs_name, vertexSource);
-  if (!result) return 0;
-  result = read_file(fs_name, fragmentSource);
-  if (!result) return 0;
+  if (!read_file(vs, vertexSource))
+    return 0;
+  if (!read_file(fs, fragmentSource))
+    return 0;
 
   // vertex shader
-  unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+  unsigned int vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
   const char* vertexShaderSource = vertexSource.c_str();
-  glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-  glCompileShader(vertexShader);
+  glShaderSource(vertexShaderID, 1, &vertexShaderSource, NULL);
+  glCompileShader(vertexShaderID);
 
   int success;
   char infoLog[512];
   // check for shader compile errors
-  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+  glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &success);
   if (!success) {
-    glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-    std::cout << "shader compile error in " << vs_name << std::endl << infoLog << std::endl;
+    glGetShaderInfoLog(vertexShaderID, 512, NULL, infoLog);
+    std::cout << "shader compile error in " << vs << std::endl << infoLog << std::endl;
     return 0;
   }
 
   // fragment shader
-  unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+  unsigned int fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
   const char* fragmentShaderSource = fragmentSource.c_str();
-  glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-  glCompileShader(fragmentShader);
+  glShaderSource(fragmentShaderID, 1, &fragmentShaderSource, NULL);
+  glCompileShader(fragmentShaderID);
   // check for shader compile errors
-  glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+  glGetShaderiv(fragmentShaderID, GL_COMPILE_STATUS, &success);
   if (!success) {
-    glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-    std::cout << "shader compile error in " << fs_name << std::endl << infoLog << std::endl;
+    glGetShaderInfoLog(fragmentShaderID, 512, NULL, infoLog);
+    std::cout << "shader compilation error in " << fs << std::endl << infoLog << std::endl;
     return 0;
   }
 
   // link program
   unsigned int shaderProgram = glCreateProgram();
-  glAttachShader(shaderProgram, vertexShader);
-  glAttachShader(shaderProgram, fragmentShader);
+  glAttachShader(shaderProgram, vertexShaderID);
+  glAttachShader(shaderProgram, fragmentShaderID);
   glLinkProgram(shaderProgram);
   // check for linking errors
   glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
   if (!success) {
     glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-    std::cout << "program linking error with " << vs_name << "and " << fs_name << std::endl << infoLog << std::endl;
+    std::cout << "program linking error with " << vs << "and " << fs << std::endl << infoLog << std::endl;
     return 0;
   }
-  glDeleteShader(vertexShader);
-  glDeleteShader(fragmentShader);
+  glDeleteShader(vertexShaderID);
+  glDeleteShader(fragmentShaderID);
 
   return shaderProgram;
 }

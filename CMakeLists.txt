@@ -31,6 +31,9 @@ target_sources(my_exe
     src/stub.h
     src/file_reader.h
     src/file_reader.cpp
+    src/wav_file_data.h
+    src/wav_file_data.cpp
+    src/lua_include.h
 )
 target_link_libraries(my_exe
     PRIVATE
@@ -38,7 +41,7 @@ target_link_libraries(my_exe
     ${OPENGL_LIBRARY}
 )
 target_compile_features(my_exe PRIVATE cxx_std_11)
-target_compile_options(my_exe PRIVATE -Wall -Wextra -Wpedantic -Werror)
+target_compile_options(my_exe PRIVATE -Wall -Wextra -Wpedantic)
 
 if(APPLE)
     target_link_libraries(my_exe PRIVATE ${COCOA_LIBS} ${IOKIT_LIBS} ${CORE_LIBS})
