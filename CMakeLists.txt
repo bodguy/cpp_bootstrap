@@ -1,15 +1,14 @@
 cmake_minimum_required(VERSION 3.8)
 
-project(MyProject)
+project(MyProject LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
-set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,readability-*)
-
 add_subdirectory(test)
+add_executable(bootstrap)
 
 if(APPLE)
     find_library(OPENGL_LIBRARY OpenGL REQUIRED)
@@ -24,8 +23,15 @@ else()
     message(FATAL "failed to find libary OpenGL")
 endif()
 
-add_executable(my_exe)
-target_sources(my_exe
+# standard compiler warnings
+include(cmake/CompilerWarnings.cmake)
+set_project_warnings(bootstrap)
+
+# allow for static analysis options
+include(cmake/StaticAnalyzers.cmake)
+
+target_compile_features(bootstrap PRIVATE cxx_std_14)
+target_sources(bootstrap
     PRIVATE
     src/main.cpp
     src/stub.h
@@ -35,14 +41,12 @@ target_sources(my_exe
     src/wav_file_data.cpp
     src/lua_include.h
 )
-target_link_libraries(my_exe
+target_link_libraries(bootstrap
     PRIVATE
     ${CONAN_LIBS}
     ${OPENGL_LIBRARY}
 )
-target_compile_features(my_exe PRIVATE cxx_std_11)
-target_compile_options(my_exe PRIVATE -Wall -Wextra -Wpedantic)
 
 if(APPLE)
-    target_link_libraries(my_exe PRIVATE ${COCOA_LIBS} ${IOKIT_LIBS} ${CORE_LIBS})
+    target_link_libraries(bootstrap PRIVATE ${COCOA_LIBS} ${IOKIT_LIBS} ${CORE_LIBS})
 endif()
