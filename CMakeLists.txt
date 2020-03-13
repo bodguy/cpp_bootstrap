@@ -21,18 +21,25 @@ elseif(UNIX AND NOT APPLE) # LINUX
 elseif(WIN32)
     find_library(OPENGL_LIBRARY OpenGL REQUIRED)
 else()
-    message(FATAL ">>> failed to find libary opengl")
+    message(FATAL "failed to find libary OpenGL")
 endif()
 
-add_executable(
-    cmake-good 
+add_executable(my_exe)
+target_sources(my_exe
+    PRIVATE
     src/main.cpp
     src/stub.h
     src/file_reader.h
     src/file_reader.cpp
-    )
-target_link_libraries(cmake-good PRIVATE ${CONAN_LIBS} ${OPENGL_LIBRARY})
+)
+target_link_libraries(my_exe
+    PRIVATE
+    ${CONAN_LIBS}
+    ${OPENGL_LIBRARY}
+)
+target_compile_features(my_exe PRIVATE cxx_std_11)
+target_compile_options(my_exe PRIVATE -Wall -Wextra -Wpedantic -Werror)
 
 if(APPLE)
-    target_link_libraries(cmake-good PRIVATE ${COCOA_LIBS} ${IOKIT_LIBS} ${CORE_LIBS})
+    target_link_libraries(my_exe PRIVATE ${COCOA_LIBS} ${IOKIT_LIBS} ${CORE_LIBS})
 endif()
