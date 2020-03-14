@@ -8,6 +8,7 @@
 #include "wav_file_data.h"
 #include "stub.h"
 #include "lua_include.h"
+#include "directive_parser.h"
 
 int main() {
   glfwInit();
@@ -40,6 +41,13 @@ int main() {
 
   std::string script_path = "../../script/eight-queen.lua";
   luaL_dofile(L, script_path.c_str());
+
+  std::string test_shader;
+  if (!read_file("../../shader/test_vs.glsl", test_shader)) {
+    std::cout << "Failed to read test shader file" << std::endl;
+    return -1;
+  }
+  find_directive(test_shader);
 
   unsigned int cubeVAO, cubeVBO;
   glGenVertexArrays(1, &cubeVAO);

@@ -20,6 +20,8 @@ add_library(project_warnings INTERFACE)
 include(cmake/CompilerWarnings.cmake)
 set_project_warnings(project_warnings)
 
+enable_testing()
+
 add_subdirectory(test)
 
 if(APPLE)
@@ -45,6 +47,8 @@ target_sources(bootstrap
     src/wav_file_data.h
     src/wav_file_data.cpp
     src/lua_include.h
+    src/directive_parser.h
+    src/directive_parser.cpp
 )
 target_link_libraries(bootstrap
     PRIVATE
