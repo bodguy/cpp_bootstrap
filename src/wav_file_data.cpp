@@ -3,7 +3,7 @@
 #include <iostream>
 
 wav_file_data::~wav_file_data() {
-delete [] static_cast<uint8_t*>(buffer_data);
+  delete[] static_cast<uint8_t*>(buffer_data);
 }
 
 ALenum to_al_format(int16_t channels, int16_t samples) {

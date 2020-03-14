@@ -40,8 +40,9 @@ void find_directive(const std::string& str) {
     }
   }
 
-  for (auto i : list) {
-    printf("%s\n", i->GetFilename().c_str());
-    delete i;
-  }
+// intentional comment out
+//  for (auto i : list) {
+//    printf("%s\n", i->GetFilename().c_str());
+//    delete i;
+//  }
 }

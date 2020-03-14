@@ -1,9 +1,11 @@
 #ifndef DIRECTIVE_PARSER_H
 #define DIRECTIVE_PARSER_H
 
+#include <iostream>
 #include <string>
+#include "heap_alloc.h"
 
-class Directive {
+class Directive : public heap_alloc {
 public:
   Directive(const std::string& name) : filename(name) {}
   std::string GetFilename() const { return filename; }

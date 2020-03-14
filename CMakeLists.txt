@@ -47,6 +47,8 @@ target_sources(bootstrap
     src/lua_include.h
     src/directive_parser.h
     src/directive_parser.cpp
+    src/heap_alloc.h
+    src/heap_alloc.cpp
 )
 target_link_libraries(bootstrap
     PRIVATE

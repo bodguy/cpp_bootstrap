@@ -154,6 +154,7 @@ int main() {
   glDeleteVertexArrays(1, &cubeVAO);
   glDeleteBuffers(1, &cubeVBO);
   glfwTerminate();
+  dempmem();
 
   return 0;
 }
