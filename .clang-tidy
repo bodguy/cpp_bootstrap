@@ -1,5 +1,5 @@
 ---
 Checks:          '-checks=-*,readability-*'
-WarningsAsErrors: '1'
+WarningsAsErrors: ''
 HeaderFilterRegex: ''
 FormatStyle:     none

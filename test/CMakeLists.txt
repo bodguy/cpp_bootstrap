@@ -4,11 +4,16 @@ target_link_libraries(CatchMain PUBLIC Catch2::Catch2)
 
 add_executable(UnitTest)
 target_sources(UnitTest
-  PRIVATE
-  src/simple_test.cpp
-  src/simple_test2.cpp
-)
-target_link_libraries(UnitTest PRIVATE CatchMain project_warnings project_options)
+    PRIVATE
+    src/simple_test.cpp
+    src/simple_test2.cpp
+    )
+target_link_libraries(UnitTest
+    PRIVATE
+    CatchMain
+    project_warnings
+    project_options
+    )
 include(Catch)
 catch_discover_tests(UnitTest
     TEST_PREFIX
@@ -17,4 +22,4 @@ catch_discover_tests(UnitTest
     -s
     --reporter=xml
     --out=tests.xml
-)
+    )

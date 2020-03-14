@@ -18,6 +18,18 @@ add_library(project_warnings INTERFACE)
 include(cmake/CompilerWarnings.cmake)
 set_project_warnings(project_warnings)
 
+# Static Analyzer settings (cppcheck, clang-tidy, iwyu)
+include(cmake/StaticAnalyzers.cmake)
+
+find_program(CCACHE ccache)
+if(CCACHE)
+    set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE})
+else()
+    message(STATUS "ccache not found cannot use")
+endif()
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 enable_testing()
 
 add_subdirectory(test)
@@ -38,25 +50,25 @@ endif()
 add_executable(bootstrap)
 target_sources(bootstrap
     PRIVATE
-    src/main.cpp
     src/stub.h
     src/file_reader.h
-    src/file_reader.cpp
     src/wav_file_data.h
-    src/wav_file_data.cpp
     src/lua_include.h
     src/directive_parser.h
-    src/directive_parser.cpp
     src/heap_alloc.h
+    src/main.cpp
+    src/file_reader.cpp
+    src/wav_file_data.cpp
+    src/directive_parser.cpp
     src/heap_alloc.cpp
-)
+    )
 target_link_libraries(bootstrap
     PRIVATE
     ${CONAN_LIBS}
     ${OPENGL_LIBRARY}
     project_options
     project_warnings
-)
+    )
 
 if(APPLE)
     target_link_libraries(bootstrap PRIVATE ${COCOA_LIBS} ${IOKIT_LIBS} ${CORE_LIBS})
