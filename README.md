@@ -34,3 +34,8 @@ run specific test case
 $ cd build
 $ ctest -R "test case 1"
 ```
+
+### TODO
+
+- conan Catch2 integration
+- conan.cmake integration

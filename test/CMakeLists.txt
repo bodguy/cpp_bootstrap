@@ -10,4 +10,11 @@ target_sources(UnitTest
 )
 target_link_libraries(UnitTest PRIVATE CatchMain project_warnings project_options)
 include(Catch)
-catch_discover_tests(UnitTest)
+catch_discover_tests(UnitTest
+    TEST_PREFIX
+    "unittests."
+    EXTRA_ARGS
+    -s
+    --reporter=xml
+    --out=tests.xml
+)
