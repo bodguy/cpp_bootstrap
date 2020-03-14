@@ -2,9 +2,7 @@ find_package(Catch2 REQUIRED)
 add_library(CatchMain STATIC test_main.cpp)
 target_link_libraries(CatchMain PUBLIC Catch2::Catch2)
 
-add_executable(UnitTest)
-target_sources(UnitTest
-    PRIVATE
+add_executable(UnitTest
     src/simple_test.cpp
     src/simple_test2.cpp
     )

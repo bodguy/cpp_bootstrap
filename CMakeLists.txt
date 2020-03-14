@@ -47,9 +47,7 @@ else()
     message(SEND_ERROR "failed to find libary OpenGL")
 endif()
 
-add_executable(bootstrap)
-target_sources(bootstrap
-    PRIVATE
+add_executable(bootstrap
     src/stub.h
     src/file_reader.h
     src/wav_file_data.h

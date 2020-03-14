@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 bool read_file(const std::string& filename, std::string& text) {
   std::ifstream file(filename, std::ios::in);
@@ -14,7 +15,9 @@ bool read_file(const std::string& filename, std::string& text) {
   file.seekg(0, std::ios::beg);
 
   text.reserve(file_size);
-  std::copy(std::istream_iterator<uint8_t>(file), std::istream_iterator<uint8_t>(), std::back_inserter(text));
+  std::stringstream sstream;
+  sstream << file.rdbuf();
+  text = sstream.str();
   file.close();
 
   return true;

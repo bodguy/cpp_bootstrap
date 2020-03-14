@@ -1,6 +1,7 @@
 #include "wav_file_data.h"
 #include <string>
 #include <iostream>
+#include <cstring>
 
 wav_file_data::~wav_file_data() {
   delete[] static_cast<uint8_t*>(buffer_data);

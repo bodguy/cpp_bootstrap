@@ -1,10 +1,11 @@
 #ifndef WAV_FILE_H
 #define WAV_FILE_H
 
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
+#include <al.h>
+#include <alc.h>
 #include <cstdint>
 #include <vector>
+#include <string>
 
 struct wav_file_data {
   wav_file_data() = default;

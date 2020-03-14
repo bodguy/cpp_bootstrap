@@ -1,5 +1,6 @@
 #include "directive_parser.h"
 #include <vector>
+#include <cstring>
 
 bool is_end_of_line(const std::string::const_iterator& iter) {
   return *iter != '\n' && *iter != '\r' && *iter != 0;
