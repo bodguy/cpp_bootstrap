@@ -3,6 +3,11 @@
 To download glew from conan, add remote repository
 
 ``` bash
+$ sudo apt-get update
+$ sudo apt-get install python3 python3-distutils
+$ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+$ python get-pip.py
+$ python -m pip install conan
 $ conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan"
 ```
 
