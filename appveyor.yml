@@ -3,7 +3,7 @@ image:
 clone_folder: c:\projects\source
 skip_non_tags: true
 platform:
-  - x64
+  - x86
 install:
   - cmd: echo "Downloading conan..."
   - cmd: set PATH=%PATH%;%PYTHON%/Scripts/
