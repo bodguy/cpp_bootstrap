@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.16)
 
 project(MyProject LANGUAGES CXX VERSION 1.0.0)
 
@@ -42,23 +42,26 @@ if(APPLE)
 elseif(UNIX AND NOT APPLE) # LINUX
     find_library(OPENGL_LIBRARY GL REQUIRED)
 elseif(WIN32)
-    find_library(OPENGL_LIBRARY OpenGL REQUIRED)
+    find_package(OpenGL REQUIRED)
 else()
     message(SEND_ERROR "failed to find libary OpenGL")
 endif()
 
-add_executable(bootstrap
+add_executable(bootstrap)
+target_sources(bootstrap
+    PRIVATE
+    src/root_dir.h
     src/stub.h
-    src/file_reader.h
-    src/wav_file_data.h
+    src/reader/file_reader.h
+    src/wav/wav_file_data.h
     src/lua_include.h
-    src/directive_parser.h
-    src/heap_alloc.h
+    src/parser/directive_parser.h
+    src/heap/heap_alloc.h
     src/main.cpp
-    src/file_reader.cpp
-    src/wav_file_data.cpp
-    src/directive_parser.cpp
-    src/heap_alloc.cpp
+    src/reader/file_reader.cpp
+    src/wav/wav_file_data.cpp
+    src/parser/directive_parser.cpp
+    src/heap/heap_alloc.cpp
     )
 target_link_libraries(bootstrap
     PRIVATE
@@ -67,7 +70,32 @@ target_link_libraries(bootstrap
     project_options
     project_warnings
     )
+target_include_directories(bootstrap PRIVATE "src")
+set(RESOURCE_DIR "resource")
+set(SHADER_DIR "shader")
+set(SCRIPT_DIR "script")
+configure_file("cmake/root_dir.h.in" "src/root_dir.h")
 
 if(APPLE)
     target_link_libraries(bootstrap PRIVATE ${COCOA_LIBS} ${IOKIT_LIBS} ${CORE_LIBS})
+endif()
+
+if(MSVC_IDE)
+    # Macro to preserve source files hierarchy in the IDE
+    macro(GroupSources curdir)
+        file(GLOB children RELATIVE ${PROJECT_SOURCE_DIR}/${curdir} ${PROJECT_SOURCE_DIR}/${curdir}/*)
+
+        foreach(child ${children})
+            if(IS_DIRECTORY ${PROJECT_SOURCE_DIR}/${curdir}/${child})
+                GroupSources(${curdir}/${child})
+            else()
+                string(REPLACE "/" "\\" groupname ${curdir})
+                string(REPLACE "src" "src" groupname ${groupname})
+                source_group(${groupname} FILES ${PROJECT_SOURCE_DIR}/${curdir}/${child})
+            endif()
+        endforeach()
+    endmacro()
+
+    # Run macro
+    GroupSources(src)
 endif()

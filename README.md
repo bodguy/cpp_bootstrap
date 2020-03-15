@@ -26,6 +26,12 @@ $ make
 $ ./bin/bootstrap
 ```
 
+when to use Windows Visual Studio
+
+``` bash
+$ cmake .. -G "Visual Studio 16"
+```
+
 ### clang-format
 
 ``` bash

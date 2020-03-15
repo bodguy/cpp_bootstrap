@@ -1,24 +1,21 @@
 #include "file_reader.h"
 #include <GL/glew.h>
 #include <iostream>
-#include <fstream>
-#include <sstream>
 
 bool read_file(const std::string& filename, std::string& text) {
-  std::ifstream file(filename, std::ios::in);
-  if (!file.is_open())
-    return false;
-  file.unsetf(std::ios::skipws);
-
-  file.seekg(0, std::ios::end);
-  std::streampos file_size = file.tellg();
-  file.seekg(0, std::ios::beg);
-
-  text.reserve(file_size);
-  std::stringstream sstream;
-  sstream << file.rdbuf();
-  text = sstream.str();
-  file.close();
+  FILE* fp = NULL;
+  fp = fopen(filename.c_str(), "r");
+  if (!fp) return false;
+  fseek(fp, 0, SEEK_END);
+  size_t size = static_cast<size_t>(ftell(fp));
+  fseek(fp, 0, SEEK_SET);
+  char* buffer = (char*)malloc(sizeof(char) * size);
+  if (!buffer) return false;
+  fread(buffer, size, 1, fp);
+  text.assign(buffer, size);
+  free(buffer);
+  fclose(fp);
+  return true;
 
   return true;
 }

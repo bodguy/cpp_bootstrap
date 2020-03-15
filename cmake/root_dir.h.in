@@ -1,0 +1,13 @@
+#ifndef ROOT_DIR_H
+#define ROOT_DIR_H
+
+// clang-format off
+#define ROOT_DIR @CMAKE_SOURCE_DIR@/
+#define TO_STR_NX(x) #x
+#define TO_STR(x) TO_STR_NX(x)
+#define RESOURCE_DIR (TO_STR(ROOT_DIR) TO_STR(@RESOURCE_DIR@/))
+#define SHADER_DIR (TO_STR(ROOT_DIR) TO_STR(@SHADER_DIR@/))
+#define SCRIPT_DIR (TO_STR(ROOT_DIR) TO_STR(@SCRIPT_DIR@/))
+// clang-format on
+
+#endif 

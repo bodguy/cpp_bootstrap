@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include "heap_alloc.h"
+#include "heap/heap_alloc.h"
 
 class Directive : public heap_alloc {
 public:

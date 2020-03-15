@@ -17,7 +17,7 @@ build_script:
   - cmd: cmake --build . --config Release
 test_script:
   - cmd: cd bin
-  - cmd: MyTest.exe
+  - cmd: UnitTest.exe
 artifacts:
   path: build\Release\*.exe
   name: binary_executable

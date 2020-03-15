@@ -4,11 +4,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include "file_reader.h"
-#include "wav_file_data.h"
+#include "reader/file_reader.h"
+#include "wav/wav_file_data.h"
 #include "stub.h"
 #include "lua_include.h"
-#include "directive_parser.h"
+#include "parser/directive_parser.h"
 
 int main() {
   glfwInit();
@@ -39,15 +39,15 @@ int main() {
   lua_State* L = luaL_newstate();
   luaL_openlibs(L);
 
-  std::string script_path = "../../script/eight-queen.lua";
+  std::string script_path = get_script_dir() + "eight-queen.lua";
   luaL_dofile(L, script_path.c_str());
 
   std::string test_shader;
-  if (!read_file("../../shader/test_vs.glsl", test_shader)) {
+  if (!read_file(get_shader_dir() + "test_vs.glsl", test_shader)) {
     std::cout << "Failed to read test shader file" << std::endl;
     return -1;
   }
-  find_directive(test_shader);
+  //find_directive(test_shader);
 
   unsigned int cubeVAO, cubeVBO;
   glGenVertexArrays(1, &cubeVAO);
@@ -57,7 +57,7 @@ int main() {
   glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices), &cube_vertices, GL_STATIC_DRAW);
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-  unsigned int shaderProgram = read_shader("../../shader/vs.glsl", "../../shader/fs.glsl");
+  unsigned int shaderProgram = read_shader(get_shader_dir() + "vs.glsl", get_shader_dir() + "fs.glsl");
   if (shaderProgram == 0) {
     std::cout << "Failed to read shader file" << std::endl;
     return -1;
@@ -71,14 +71,12 @@ int main() {
   float lastFrame = 0.0f;
 
   std::string buffer_str;
-  if (!read_file("../../resource/dragonquest.wav", buffer_str)) {
+  if (!read_file(get_resource_dir() + "dragonquest.wav", buffer_str)) {
     std::cout << "Failed to read wav file" << std::endl;
     return -1;
   }
   wav_file_data wav_data{};
-  std::vector<uint8_t> raw_data;
-  raw_data.reserve(buffer_str.length());
-  std::copy(buffer_str.begin(), buffer_str.end(), std::back_inserter(raw_data));
+  std::vector<uint8_t> raw_data(buffer_str.begin(), buffer_str.end());
   if (!read_wav(raw_data, &wav_data)) {
     std::cout << "Failed to parse wav file" << std::endl;
     return -1;
