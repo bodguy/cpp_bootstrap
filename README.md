@@ -73,3 +73,12 @@ cmake .. -DENABLE_CLANGTIDY
 ```bash
 cmake .. -DENABLE_IWYU
 ```
+
+### ccache
+
+ccache built-in support
+
+``` bash
+ccache -s
+```
+
