@@ -74,7 +74,7 @@ target_include_directories(bootstrap PRIVATE "src")
 set(RESOURCE_DIR "resource")
 set(SHADER_DIR "shader")
 set(SCRIPT_DIR "script")
-configure_file("cmake/root_dir.h.in" "src/root_dir.h")
+configure_file("${CMAKE_SOURCE_DIR}/cmake/root_dir.h.in" "${CMAKE_SOURCE_DIR}/src/root_dir.h")
 
 if(APPLE)
     target_link_libraries(bootstrap PRIVATE ${COCOA_LIBS} ${IOKIT_LIBS} ${CORE_LIBS})
