@@ -82,3 +82,17 @@ ccache built-in support
 ccache -s
 ```
 
+### MSVC without Visual Studio
+
+in order to use nmake in Visual c++, check the env variables to set cl.exe, vcvarsall.bat.  
+cl.exe is core msvc c++ compiler program, vcvarsall.bat is batch script that helps cl.exe can set every vc variables like include (-I), link path.
+nmake is helper program to build make files in Windows, unlike make command, it is not compatible with standard Makefiles.
+
+``` bash
+set PATH=%PATH%;path-to-cl;path-to-vcvarsall
+mkdir build
+cd build
+conan install .. --build=missing
+cmake -G "NMake Makefiles" ..
+nmake
+```
