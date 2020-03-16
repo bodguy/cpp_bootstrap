@@ -16,8 +16,6 @@ bool read_file(const std::string& filename, std::string& text) {
   free(buffer);
   fclose(fp);
   return true;
-
-  return true;
 }
 
 unsigned int read_shader(const std::string& vs, const std::string& fs) {

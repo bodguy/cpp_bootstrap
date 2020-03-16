@@ -1,3 +1,4 @@
+version: 1.0.{build}
 image:
   - Visual Studio 2017
 clone_folder: c:\projects\source
@@ -17,10 +18,10 @@ build_script:
   - cmd: conan install .. --build=missing
   - cmd: echo "conan installation success!"
   - cmd: cmake c:\projects\source -G "Visual Studio 15"
-  - cmd: cmake --build . --config Debug
+  - cmd: cmake --build . --config Release
 test_script:
   - cmd: cd bin
   - cmd: UnitTest.exe
 artifacts:
-  path: build\Debug\*.exe
+  path: build\Release\*.exe
   name: binary_executable
