@@ -13,6 +13,7 @@ install:
 build_script:
   - cmd: mkdir build
   - cmd: cd build
+  - cmd: conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan"
   - cmd: conan install .. --build=missing
   - cmd: cmake c:\projects\source -G "Visual Studio 15"
   - cmd: cmake --build . --config Release
