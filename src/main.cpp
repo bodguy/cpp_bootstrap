@@ -152,7 +152,7 @@ int main() {
   glDeleteVertexArrays(1, &cubeVAO);
   glDeleteBuffers(1, &cubeVBO);
   glfwTerminate();
-  dempmem();
+  dumpmem();
 
   return 0;
 }

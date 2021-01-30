@@ -7,6 +7,7 @@ target_sources(UnitTest
     PRIVATE
     src/simple_test.cpp
     src/simple_test2.cpp
+    ../../src/heap/heap_alloc.cpp
     )
 target_link_libraries(UnitTest
     PRIVATE
